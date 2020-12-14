@@ -1,0 +1,117 @@
+{% extends "loggedBase.html" %}
+
+{% block style %}
+	{{ parent() }}
+	<style>
+		#modalMapRoad .ui-title{
+			width: 90%;
+			margin: auto !important;
+		}
+	</style>
+{% endblock %}	
+
+{% block script %}
+	<script	src="/scripts/map.js?{{ date().timestamp }}"></script>
+	<script	src="/scripts/routeManage.js?{{ date().timestamp }}"></script>
+	<script	src="/scripts/addMarkers.js?{{ date().timestamp }}"></script>
+	
+	<script>
+		$(document).ready(function(){
+			$("#btConferma").click(function(e){
+			    $("#modalMapRoad").popup("open", {
+			        transition: "slideup",
+			        positionTo: "window"
+			    });
+			    
+			    clearMarkers();
+			    
+			    radio = $('form input[name=idDriver]:checked');
+			    
+			    home = latLngFromString(radio.attr('abitazione'));
+				placeMarkerOutOrigins(home, map);
+				
+				destination = latLngFromString("{{ event.meetingPoint }}");
+				placeMarkerOutOrigins(destination, map, 'https://maps.google.com/mapfiles/ms/icons/green-dot.png');
+				
+				var road = jQuery.parseJSON(radio.attr('road'));
+				
+				$.each(road, function(i, latLng){
+					origins.push(latLngFromArray(latLng));
+				});
+				
+				google.maps.event.clearListeners(map, 'click');
+				
+				calculateDistances();
+			});
+			
+			$("#modalBtnConferma").click(function(e){
+		    	$('form').attr('action', '/passenger/car/save');
+		    	$('form').submit();
+			});
+			    
+		    $("#modalBtnPulisciChiudi").click(function(e){
+		    	clearMarkers();
+		    	if (origins.length == 0){
+		    		 $("#modalMapRoad").popup("close");
+		    	}
+			});
+		});
+		
+		$(document).on('pagecreate', '#home', function() {
+			initMap();
+		});
+	</script>
+{% endblock %}	
+
+{% block content %}
+
+<form action="/passenger/car/detailmap" method="post" id="passeggeri_form" data-ajax="false">
+	<input type="hidden" name="idEvent" value="{{ event.id }}" />
+	<input type="hidden" name="idPassenger" value="{{ passenger.id }}" />
+	<input type="hidden" name="meetingPoint" id="meetingPoint" />
+	<div class="ui-field-contain">
+		{% if availableDriver|length > 0 or driverWithSeats|length > 0 %}
+		<label for="gk-929ayop">Al momento ci sono questi autisti<br />
+			<span style='font-size:small;'>(una volta confermata la selezione potrai vedere l&apos;itinerario che l&apos;autista intende effettuare)</span>
+		</label>
+		<fieldset data-role="controlgroup" data-type="vertical" data-iconpos="right">
+		  <legend>Seleziona l&apos;autista col quale vuoi andare</legend>
+		  	{% for driver in availableDriver %}
+		  		{% set user = driver.users %}
+				<input id='autista_{{ driver.id }}' name='idDriver' type='radio'  value='{{ driver.id }}' road="{{ driver.road }}" abitazione="{{ user.abitazione }}">
+	           	<label for='autista_{{ driver.id }}'>{{ user.fullName }}
+	           	</label>
+			{% endfor %}
+			
+			{% for car in driverWithSeats %}
+				{% set driver = car.driver %}
+				{% set user = driver.users %}
+				<input id='autista_{{ car.idDriver }}' name='idDriver' type='radio' value='{{ car.idDriver }}' road="{{ driver.road }}" abitazione="{{ user.abitazione }}">
+	           	<label for='autista_{{ car.idDriver }}'>{{ user.fullName }}
+	           	</label>
+			{% endfor %}	      
+		</fieldset>
+		<h3 is="gk-text">Se questi autisti non fanno al caso tuo, non preoccuparti; ti invier&ograve; un&apos;email appena un&apos;autista si registrer&agrave;.</h3>
+	    {% else %}
+			<h3 is="gk-text">Ancora nessun autista si &eacute; registrato
+				a questo evento. Ti mander&ograve; un&apos;email appena un passeggero
+				si registrer&agrave;.</h3>
+		{% endif %}
+	</div>
+	{% if availableDriver|length > 0 or driverWithSeats|length > 0 %}
+		<a href="#" data-role="button" id="btConferma">Conferma scelta</a>
+	{% endif %}
+	
+	<div data-role="popup" id="modalMapRoad" data-dismissible="false" data-overlay-theme="b" data-theme="c">
+		<div data-role="header" data-theme="c" class="ui-corner-top">
+			<h2>Questo &eacute; l&apos;itinerario che <br />l&apos;autista intende effettuare</h2><br />
+		</div>
+		<div role="main" class="ui-corner-bottom ui-content">
+			<span style='font-size:small; padding-left: 2px;'>Se preferisci, puoi inserire il punto dove farti recuperare lungo il tragitto evidenziato</span>
+			<div id="map-canvas"></div>
+			<a href="#" id="modalBtnConferma" data-role="button" data-inline="true" data-theme="c" class="ui-button ui-shadow ui-corner-all ui-button-inline ui-widget ui-button-a" role="button">Conferma</a>
+			<a href="#" id="modalBtnPulisciChiudi" data-role="button" data-inline="true" data-transition="flow" data-theme="c" class="ui-button ui-shadow ui-corner-all ui-button-inline ui-widget ui-button-b" role="button">Pulisci/Chiudi</a>
+		</div>
+	</div>
+</form>
+{% endblock %}

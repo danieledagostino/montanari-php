@@ -1,0 +1,91 @@
+{% extends "loggedBase.html" %}
+
+{% block script %}
+	<script	src="/scripts/map.js?{{ date().timestamp }}"></script>
+	<script	src="/scripts/routeManage.js?{{ date().timestamp }}"></script>
+	<script	src="/scripts/addMarkers.js?{{ date().timestamp }}"></script>
+	
+	<script>
+		$(document).on('pagecreate', '#home', function() {
+			initMap();
+			
+			home = latLngFromString("{{ driver.users.abitazione }}");
+			mHome = placeMarkerOutOrigins(home, map);
+			
+			destination = latLngFromString("{{ event.meetingPoint }}");
+			placeMarkerOutOrigins(destination, map, 'https://maps.google.com/mapfiles/ms/icons/green-dot.png');
+			
+			var road = {{ driver.road|raw }};
+			
+			$.each(road, function(i, latLng){
+				origins.push(latLngFromArray(latLng));
+			});
+			
+			google.maps.event.clearListeners(map, 'click');
+				
+			//placeMarker(e.latLng, map, 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png');
+			
+			calculateDistances();
+		});
+	</script>
+	
+{% endblock %}
+
+{% block content %}
+<script>
+	var posti = {{ driver.seatsNumber }};
+</script>
+
+<script src="/scripts/passenger_selection.js?{{ date().timestamp }}"></script>
+
+<form action="/driver/car/save" method="post" data-ajax="false">
+	<input type="hidden" name="idEvent" value="{{ event.id }}" />
+	<input type="hidden" name="idDriver" value="{{ driver.id }}" />
+	<div class="ui-field-contain">
+		<div id="map-canvas"></div>
+	</div>
+	<div class="ui-field-contain">
+		{% if availablePassengers|length > 0 or confirmedPassenger|length > 0 %}
+			<label for="gk-929ayop">Questi sono i passeggeri che <br>ancora
+				non hanno trovato un passaggio
+			</label>
+			<fieldset data-role="controlgroup" data-type="vertical">
+				<legend>Seleziona i passeggeri <span style='font-size:small;'>(selezionando verr&agrave; visualizzato sulla mappa l&apos;indirizzo dell&apos;abitazione)</span></legend>
+				{% for passenger in availablePassengers %}
+					{% set user = passenger.users %}
+					<input id='passeggero_{{ passenger.id }}' name='idPassenger[]' type='checkbox'  value='{{ passenger.id }}' latlng='{{ user.abitazione }}'>
+	            	<label for='passeggero_{{ passenger.id }}'>{{ user.fullName }}
+	            	</label>
+				{% endfor %}
+				
+				{% for car in confirmedPassenger %}
+					{% set passenger = car.passenger %}
+					{% set user = passenger.users %}
+					{% set confermato = '' %}
+					{% if car.confirmed %}
+	            		{% set confermato = 'confermato' %}
+	            	{% endif %}
+					
+					<input id='passeggero_{{ car.idPassenger }}' name='idPassenger[]' type='checkbox' checked='checked' {{ confermato }} value='{{ car.idPassenger }}' latlng='{{ user.abitazione }}'>
+	            	<label for='passeggero_{{ car.idPassenger }}'>{{ user.fullName }}&nbsp;
+	            	{% if car.confirmed %}
+	            		<span class='ui-btn-icon-notext ui-icon-check' style='position:relative'></span>
+	            	{% endif %}
+	            	</label>
+				{% endfor %}
+			</fieldset>
+			
+			<h4 is="gk-text">Se questi passeggeri non fanno al caso tuo, non
+				preoccuparti; ti invier&ograve; un&apos;email appena un passeggero si
+				registrer&agrave;.</h4>
+		{% else %}
+			<h3 is="gk-text">Ancora nessun passeggero si &eacute; registrato
+				a questo evento. Ti mander&ograve; un&apos;email appena un passeggero
+				si registrer&agrave;.</h3>
+		{% endif %}
+	</div>
+	{% if availablePassengers|length > 0 or confirmedPassenger|length > 0 %}
+		<input type="submit" value="Conferma scelta">
+	{% endif %}
+</form>
+{% endblock %}

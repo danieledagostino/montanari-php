@@ -1,0 +1,17 @@
+.ui-icon-mont-message:after {
+	background-image: url("/images/message.png");
+}
+
+.ui-icon-mont-notify:after {
+	background-image: url("/images/notify.png");
+}
+
+.ui-icon-mess-open:after {
+	background-image: url("/images/open.png?1");
+	background-size: 16px 16px;
+}
+
+.ui-icon-mess-delete:after {
+	background-image: url("/images/delete.png?1");
+	background-size: 16px 16px;
+}

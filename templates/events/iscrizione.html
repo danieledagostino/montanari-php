@@ -1,0 +1,116 @@
+{% extends "loggedBase.html" %}
+
+{% block script %}
+	<script	src="/scripts/map.js?{{ date().timestamp }}"></script>
+	<script	src="/scripts/addMarkers.js?{{ date().timestamp }}"></script>
+	<script	src="/scripts/routeManage.js?{{ date().timestamp }}"></script>
+	<script	src="/scripts/iscrizione.js?{{ date().timestamp }}"></script>
+	
+	<script>
+		$(document).ready(function(){
+			
+			$("#btInviaRegistrazioneUtente").click(function(e){
+			    $("#modalConfirmSave").popup("open", {
+			        transition: "slideup",
+			        positionTo: "window"
+			    });
+			});
+			    
+		    $("#modalBtnSave").click(function(e){
+		    	$('#strada').val(JSON.stringify(origins));
+		    	var cntr = $('#sel-ruolo').find(":selected").val();
+		    	$('form').attr('action', cntr+'save');
+		    	$('form').submit();
+			});
+			    
+		    $("#modalBtnSaveAndContinue").click(function(e){
+		    	$('#strada').val(JSON.stringify(origins));
+		    	var cntr = $('#sel-ruolo').find(":selected").val();
+		    	$('form').attr('action', cntr+'saveAndContinue');
+		    	$('form').submit();
+			});
+		});
+		
+		$(document).on('pagecreate', '#home', function() {
+			initMap();
+			
+			home = latLngFromString("{{ user.abitazione }}");
+			placeMarkerOutOrigins(home, map);
+			
+			destination = latLngFromString("{{ event.meetingPoint }}");
+			placeMarkerOutOrigins(destination, map, 'https://maps.google.com/mapfiles/ms/icons/green-dot.png');
+		});
+	</script>
+{% endblock %}
+
+{% block content %}
+
+	<form action="/event/partecipa/save" method="post" data-ajax="false">
+	  <h3 is="gk-text">Organizzazione macchine</h3> 
+		
+	  <input type="hidden" maxlength="30" name="idEvent" value="{{ event.id }}" />
+		
+	  <div class="ui-field-contain">
+		<label for="sel-ruolo">Cosa sei <span style="font-size: x-small;">(Autista/Passeggero)</span>?</label>
+		<select name="ruolo" id="sel-ruolo">
+		  <option value></option>
+		  <option value="/driver/">Autista</option>
+		  <option value="/passenger/">Passeggero</option>
+		</select>
+	  </div>
+	  <div class="ui-field-contain">
+		<div id="infoPopupPosti" data-role="popup">Scegli il numero di posti che vuoi mettere a disposizione nella tua auto.
+		I posti devono essere per i soli passeggeri quindi l&apos;autista non va considerarto.<br/>
+		In pi&ugrave; se hai gi&agrave; preso accordi privatamente con uno o pi&ugrave; passeggeri, 
+		devi sottrarre questo numero ai posti messi a disposizione.
+		</div>
+		<label for="gk-9298eiO">Quanti posti passeggeri puoi mettere a disposizione?
+			<span style="font-size: x-small;">(Considera eventuali zaini e/o bagagli)</span>
+			<a href="#infoPopupPosti" data-rel="popup" data-theme="e" 
+			data-role="button" data-transition="pop" data-icon="info" data-iconpos="notext"
+			data-inline="true"></a>
+		</label>
+		<select name="posti" id="gk-9298eiO">
+			<option value=""></option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+		</select>
+	  </div>
+	  <div class="ui-field-contain" id="mapRoute">
+			<div id="infoPopupStrada" data-role="popup">
+				Premi sulla mappa inserendo i punti che intendi passare per arrivare al luogo di incontro, e poi premi il pulsante <i>Calcolca percorso</i>.
+			</div>
+			<label for="gk-929QR99">Solo per gli autisti - che strada intendi fare per arrivare al luogo di incontro?
+			<a href="#infoPopupStrada" data-rel="popup" data-theme="e" 
+				data-role="button" data-transition="pop" data-icon="info" data-iconpos="notext"
+				data-inline="true"></a>
+			</label>
+			<div id="map-canvas"></div>
+			<input type="hidden" name="strada" id="strada" />
+			<div id="map_buttons" class="ui-field-contain">
+				<button type="button" onclick="calculateDistances();" id="calcolaPercorso">Calcola percorso</button>
+				<button type="button" onclick="clearMarkers();" id="pulisciPercorso">Pulisci</button>
+			</div>
+	  </div>
+	  <a href="#" data-role="button" id="btInviaRegistrazioneUtente">Invia</a>
+	</form>
+	
+	<div data-role="popup" id="popupBasic">
+		<p>Devi prima aggiungere altri punti sulla mappa, 
+		oltre il punto di partenza e di destinazione gi&agrave; fissati<p>
+	</div>
+	
+	<div data-role="popup" id="modalConfirmSave" data-dismissible="false" data-overlay-theme="b" data-theme="c">
+		<div data-role="header" data-theme="c" class="ui-corner-top">
+			<h1>Come vuoi procedere?</h1>
+		</div>
+		<div role="main" class="ui-corner-bottom ui-content">
+			<p>Premendo <i>Salva e continua</i> puoi decidere di continuare con la scelta degli ospiti o dell&apos;autista.<br />
+			Altrimenti, premendo <i>Salva ed esci</i> potrai farlo in in un secondo momento.<p>
+			<a href="#" id="modalBtnSave" data-role="button" data-inline="true" data-theme="c" class="ui-button ui-shadow ui-corner-all ui-button-inline ui-widget ui-button-a" role="button">Salva ed esci</a>
+			<a href="#" id="modalBtnSaveAndContinue" data-role="button" data-inline="true" data-transition="flow" data-theme="c" class="ui-button ui-shadow ui-corner-all ui-button-inline ui-widget ui-button-b" role="button">Salva e continua</a>
+		</div>
+	</div>
+{% endblock %}

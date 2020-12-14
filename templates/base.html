@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+			<title>Montanari di ricotta</title>
+			
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, user-scalable=no">
+			<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob: filesystem:">
+			<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+			
+			{% block style %}
+			<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+			<link rel="stylesheet" href="https://demos.jquerymobile.com/1.4.0/theme-classic/theme-classic.css" />
+            <link rel="stylesheet" href="/styles/style.css?{{ date().timestamp }}" />
+			{% endblock %}
+			
+			{% block script %}
+				<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+				
+				<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async='async'></script>
+				<script>
+					var OneSignal = window.OneSignal || [];
+					OneSignal.push(["init", {
+						appId: "f5fd4307-3e07-4370-96e7-f42436d4e3ee",
+						autoRegister: true, /* Set to true to automatically prompt visitors */
+						notifyButton: {
+							enable: false /* Set to false to hide */
+						},
+						promptOptions: {
+						  actionMessage: "Abilita per ricevere notifiche quando un autista o un passeggero si registrerà",
+						  acceptButtonText: "Abilita",
+						  cancelButtonText: "NO"
+						}
+					}]);
+				</script>
+				<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+				
+			{% endblock %}
+        {% endblock %}
+    </head>
+    <body>
+		<div id="home" data-role="page" data-theme="b" class="header">
+			<div data-role="header">
+				<h4>Montanari di Ricotta</h4>
+				<a href="/user/login" data-role="button" data-inline="true">Login</a>
+			</div>
+		
+			<div data-role="content" class="ui-content">
+				<h3 style="color: red;">{{ message|raw }}</h3>
+				{% block content %}{% endblock %}
+			</div>
+		</div>
+    </body>
+</html>

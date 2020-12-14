@@ -1,0 +1,65 @@
+{% extends "loggedBase.html" %}
+
+{% block content %}
+	
+	<form action="/setting/save" method="post" data-ajax="false">
+		<div data-role="tabs" id="tabs">
+		  <div data-role="navbar">
+		    <ul>
+		      <li><a href="#push" data-ajax="false" data-icon="info" data-iconpos="top"
+		      	class="ui-btn-active ui-state-persist" >Notifiche</a></li>
+		      <li><a href="#email" data-ajax="false" data-icon="mail" 
+		      		data-iconpos="top">E-mail</a></li>
+		    </ul>
+		  </div>
+		  <div id="push" class="ui-body-b ui-content">
+		    <h3>Notifiche push - scegli quale ricevere</h3>
+		    
+		    <div data-role="fieldcontain">
+			    <label for="pushMessage">Push quando si riceve una messaggio</label>
+				<select name="pushMessage" id="push_message" data-role="slider" data-mini="true">
+					<option value='no'>No</option>
+					<option value='si'>Si</option>
+				</select>
+			</div>
+		  </div>
+		  <div id="email" class="ui-body-b ui-content">
+		  	<h3>E-mail - scegli quale ricevere</h3>
+		  
+		  	<div data-role="fieldcontain">
+			  	<label for="emailMessage">E-mail quando si riceve una messaggio</label>
+				<select name="emailMessage" id="email_message" data-role="slider" data-mini="true">
+					<option value='no'>No</option>
+					<option value='si'>Si</option>
+				</select>
+			</div>
+			<div data-role="fieldcontain">
+				<label for="emailCarSummary">E-mail per ricevere il riepilogo organizzativo delle macchine</label>
+				<select name="emailCarSummary" id="email_car_summary" data-role="slider" data-mini="true">
+					<option value='no'>No</option>
+					<option value='si'>Si</option>
+				</select>
+			</div>
+			<div data-role="fieldcontain">
+				<label for="emailEventSummary">E-mail per ricevere il riepilogo delle attivit&agrave; mensile</label>
+				<select name="emailEventSummary" id="email_event_summary" data-role="slider" data-mini="true">
+					<option value='no'>No</option>
+					<option value='si'>Si</option>
+				</select>
+			</div>
+		  </div>
+		</div>
+		
+		<div data-role="fieldcontain">
+			<input type="submit" value="Salva">
+		</div>
+	</form>
+	<script>
+		$(document).on('pagecreate', function(){
+			$("#push_message").val('{{ setting.pushMessage }}').slider("refresh");
+			$("#email_message").val('{{ setting.emailMessage }}').slider("refresh");
+			$("#email_car_summary").val('{{ setting.emailCarSummary }}').slider("refresh");
+			$("#email_event_summary").val('{{ setting.emailEventSummary }}').slider("refresh");
+		});
+	</script>
+{% endblock %}

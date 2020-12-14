@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<form action="/user/requestConfirm" method="post" data-ajax="false">
+		<input type="hidden" name="username" value="{{ user.username }}" />
+		<div data-role="fieldcontain" class="ui-hide-label">
+			<p>l'account non &eacute; stato ancora confermato.</p><br>
+			<p>Se non ti &eacute; arrivata la mail di conferma account richiedila di nuovo premendo sul bottone sotto</p>
+		</div>
+		<div data-role="fieldcontain">
+			<input type="submit" value="Richiedi di nuovo la mail di conferma">
+		</div>
+		Non sei ancora registrato? clicca <a href="/user/new">qui</a>
+	</form>
+{% endblock %}

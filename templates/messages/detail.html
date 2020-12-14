@@ -1,0 +1,16 @@
+<div data-role="popup" data-overlay-theme="b" data-theme="c" class="ui-content message_detail" data-dismissible="true" id="detailPopup">
+	<div class="ui-grid-a">
+	    <div class="ui-block-a"><b>Messaggio da:</b></div>
+	    <div class="ui-block-b"><i>{{ from }}</i></div>
+	    <div class="ui-block-a"><b>Oggetto:</b></div>
+	    <div class="ui-block-b"><i>{{ subject }}</i></div>
+	</div>
+	<div class="ui-grid-solo">
+	    <div class="ui-block-a"><p>{{ body }}</p></div>
+	</div>
+	<div class="ui-grid-b">
+	    <div class="ui-block-a"><a href="/message/compose/{{ id }}" id="msgAnswerBtn" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flip">Rispondi</a></div>
+	    <div class="ui-block-b"><a href="/message/delete/{{ id }}" messageId="{{ id }}" id="msgDeleteBtn" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">Elimina</a></div>
+	</div>
+	<a href="#" data-role="button" id="detailPopupCloseBtn" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+</div>

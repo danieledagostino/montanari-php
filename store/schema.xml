@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore" namespace="Montanari\Propel">
+  <table name="admin_messages" idMethod="native" phpName="AdminMessages" identifierQuoting="true">
+    <column name="id" phpName="Id" type="BIGINT" primaryKey="true" required="true"/>
+    <column name="message" phpName="Message" type="VARCHAR" size="500" required="true"/>
+    <column name="delete" phpName="Delete" type="VARCHAR" size="1" sqlType="bit(1)" required="true" defaultValue="b'0'"/>
+    <column name="insert_date" phpName="InsertDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="admin_messages_read_by_user" idMethod="native" phpName="AdminMessagesReadByUser" identifierQuoting="true">
+    <column name="id" phpName="Id" type="BIGINT" primaryKey="true" required="true"/>
+    <column name="id_user" phpName="IdUser" type="INTEGER" required="true"/>
+    <column name="message" phpName="Message" type="VARCHAR" size="500" required="true"/>
+    <column name="read" phpName="Read" type="VARCHAR" size="1" sqlType="bit(1)" required="true" defaultValue="b'0'"/>
+    <column name="insert_date" phpName="InsertDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="car_organization" idMethod="native" phpName="CarOrganization">
+    <column name="id_driver" phpName="IdDriver" type="INTEGER" size="4" primaryKey="true" required="true"/>
+    <column name="id_passenger" phpName="IdPassenger" type="INTEGER" size="4" primaryKey="true" required="true"/>
+    <column name="id_event" phpName="IdEvent" type="VARCHAR" size="100" primaryKey="true" required="true"/>
+    <column name="confirmed" phpName="Confirmed" type="INTEGER" size="1" required="true" defaultValue="0"/>
+    <column name="confirm_code" phpName="ConfirmCode" type="VARCHAR" size="16"/>
+    <column name="insert_date" phpName="InsertDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <foreign-key name="car_organization_users_pk_driver" foreignTable="drivers" phpName="Driver">
+		<reference local="id_driver" foreign="id"/>
+	</foreign-key>
+	<foreign-key name="car_organization_users_fk_passenger" foreignTable="passengers" phpName="Passenger">
+		<reference local="id_passenger" foreign="id"/>
+	</foreign-key>
+	<foreign-key name="car_organization_events_fk" foreignTable="events">
+		<reference local="id_event" foreign="id"/>
+	</foreign-key>
+	<index name="car_organization">
+      <index-column name="id_driver"/>
+      <index-column name="id_event"/>
+      <index-column name="id_passenger"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="drivers" idMethod="native" phpName="Drivers">
+    <column name="id" phpName="Id" type="BIGINT" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="id_user" phpName="IdUser" type="INTEGER" required="true"/>
+    <column name="insert_date" phpName="InsertDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <column name="id_event" phpName="IdEvent" type="VARCHAR" size="100" required="true"/>
+    <column name="road" phpName="Road" type="VARCHAR" size="100" required="true"/>
+    <column name="seats_number" phpName="SeatsNumber" type="INTEGER" required="true" defaultValue="0"/>
+    <foreign-key foreignTable="users">
+		<reference local="id_user" foreign="id"/>
+	</foreign-key>
+	<foreign-key foreignTable="events">
+		<reference local="id_event" foreign="id"/>
+	</foreign-key>
+	<unique name="id">
+      <unique-column name="id"/>
+    </unique>
+    <index name="drivers_pk">
+      <index-column name="id_user"/>
+      <index-column name="id_event"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="events" idMethod="native" phpName="Events">
+    <column name="id" phpName="Id" type="VARCHAR" size="100" primaryKey="true" required="true"/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="meeting_point" phpName="MeetingPoint" type="VARCHAR" size="50" required="true" defaultValue="da definire"/>
+    <column name="departure_coords" phpName="DepartureCoords" type="VARCHAR" size="50"/>
+    <column name="event_date" phpName="EventDate" type="DATE"/>
+    <column name="insert_date" phpName="InsertDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="100" required="true"/>
+    <column name="meeting_point_name" phpName="MeetingPointName" type="VARCHAR" size="50"/>
+    <column name="id_fb" phpName="IdFb" type="VARCHAR" size="100" required="true"/>
+    <column name="update_date" phpName="UpdateDate" type="TIMESTAMP" required="true" />
+    <behavior name="timestampable">
+    	<parameter name="disable_created_at" value="true" />
+		<parameter name="update_column" value="update_date" />
+	</behavior>
+    <unique name="id">
+      <unique-column name="id"/>
+    </unique>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="messages" idMethod="native" phpName="Messages" identifierQuoting="true">
+    <column name="id" phpName="Id" type="BIGINT" primaryKey="true" required="true" autoIncrement="true" />
+    <column name="id_user_from" phpName="IdUserFrom" type="INTEGER" required="true"/>
+    <column name="id_user_to" phpName="IdUserTo" type="INTEGER" required="true"/>
+    <column name="message" phpName="Message" type="LONGVARCHAR" required="true"/>
+    <column name="read" phpName="Read" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="delete" phpName="Delete" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="insert_date" phpName="InsertDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <column name="type" phpName="Type" type="VARCHAR" size="15" required="false"/>
+    <column name="subject" phpName="Subject" type="VARCHAR" size="100" required="false"/>
+    <column name="parent" phpName="Parent" type="BIGINT" required="false"/>
+    <foreign-key foreignTable="users" phpName="UserFrom">
+		<reference local="id_user_from" foreign="id"/>
+	</foreign-key>
+	<foreign-key foreignTable="users" phpName="UserTo">
+		<reference local="id_user_to" foreign="id"/>
+	</foreign-key>
+	<foreign-key foreignTable="messages" phpName="ParentTo">
+		<reference local="parent" foreign="id"/>
+	</foreign-key>
+    <index name="messages_pk">
+      <index-column name="id"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="passengers" idMethod="native" phpName="Passengers">
+    <column name="id" phpName="Id" type="BIGINT" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="id_user" phpName="IdUser" type="INTEGER" required="true"/>
+    <column name="insert_date" phpName="InsertDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <column name="id_event" phpName="IdEvent" type="VARCHAR" size="100" required="true"/>
+    <column name="meeting_point" phpName="MeetingPoint" type="VARCHAR" size="30" required="true"/>
+    <foreign-key foreignTable="users">
+		<reference local="id_user" foreign="id"/>
+	</foreign-key>
+	<foreign-key foreignTable="events">
+		<reference local="id_event" foreign="id"/>
+	</foreign-key>
+	<unique name="id">
+      <unique-column name="id"/>
+    </unique>
+    <index name="passengers_pk">
+      <index-column name="id_user"/>
+      <index-column name="id_event"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="user_settings" idMethod="native" phpName="UserSettings">
+    <column name="id_user" phpName="IdUser" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="push_message" phpName="PushMessage" type="VARCHAR" size="2" required="true" defaultValue="si"/>
+    <column name="email_message" phpName="EmailMessage" type="VARCHAR" size="2" required="true" defaultValue="si"/>
+    <column name="email_car_summary" phpName="EmailCarSummary" type="VARCHAR" size="2" required="true" defaultValue="si"/>
+    <column name="email_event_summary" phpName="EmailEventSummary" type="VARCHAR" size="2" defaultValue="si"/>
+    <foreign-key foreignTable="users">
+		<reference local="id_user" foreign="id"/>
+	</foreign-key>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="users" idMethod="native" phpName="Users">
+    <column name="id" phpName="Id" type="INTEGER" size="4" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="username" phpName="Username" type="VARCHAR" size="30" required="true"/>
+    <column name="nome" phpName="Nome" type="VARCHAR" size="30" required="true"/>
+    <column name="cognome" phpName="Cognome" type="VARCHAR" size="30" required="true"/>
+    <column name="password" phpName="Password" type="VARCHAR" size="32" required="true"/>
+    <column name="abitazione" phpName="Abitazione" type="VARCHAR" size="40"/>
+    <column name="autonomia" phpName="Autonomia" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="50" required="true"/>
+    <column name="id_player_notifiche" phpName="IdPlayerNotifiche" type="VARCHAR" size="40"/>
+    <column name="insert_date" phpName="InsertDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <column name="email_confirm" phpName="EmailConfirm" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="first_access" phpName="FirstAccess" type="BOOLEAN" size="1" required="true" defaultValue="true"/>
+    <column name="code_confirm" phpName="CodeConfirm" type="VARCHAR" size="16"/>
+    <unique name="username">
+      <unique-column name="username"/>
+    </unique>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="app_settings" idMethod="native" phpName="AppSettings">
+    <column name="key_name" phpName="KeyName" type="VARCHAR" size="20" primaryKey="true" required="true"/>
+    <column name="value" phpName="Value" type="VARCHAR" size="20" required="true"/>
+     <unique name="key_name">
+      <unique-column name="key_name"/>
+    </unique>
+  </table>
+</database>

@@ -1,0 +1,36 @@
+{% extends "loggedBase.html" %}
+
+{% block content %}
+	<h1>Cestino</h1>
+	<div class="ui-field-contain">
+		<h3>Messaggi ricevuti</h3>
+		<table data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+			<thead>
+				<tr>
+					<th data-priority="persist">&nbsp;</th>
+					<th data-priority="persist">Mittente</th>
+					<th data-priority="persist">Oggetto</th>
+					<th data-priority="persist">Data</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for msg in arrived %}
+					<tr>
+						<td><span class="ui-btn-icon-notext ui-icon-arrow-l" style="position:relative; float: left;" /></td>
+						<td>{{ msg.userFrom.fullName }}</td>
+						<td>{{ msg.subject }}</td>
+						<td>{{ msg.insertDate |date("l, d M Y h:i:s")}}</td>
+					</tr>
+				{% endfor %}
+				{% for msg in sent %}
+					<tr>
+						<td><span class="ui-btn-icon-notext ui-icon-arrow-r" style="position:relative; float: left;" /></td>
+						<td>{{ msg.userTo.fullName }}</td>
+						<td>{{ msg.subject }}</td>
+						<td>{{ msg.insertDate |date("d M Y h:i:s")}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

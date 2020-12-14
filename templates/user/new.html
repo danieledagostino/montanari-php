@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+	
+	<form action="/user/save" method="post" data-ajax="false">
+		<div class="ui-field-label">
+			<label for="username">Nome utente (univoco):</label>
+			<input type="text" name="username" id="username" value="{{ user.username }}" placeholder="Username" />
+		</div>
+		<div class="ui-field-label">
+			<label for="nome">Nome:</label>
+			<input type="text" name="nome" id="nome" value="{{ user.nome }}" placeholder="Nome" />
+		</div>
+		<div class="ui-field-label">
+			<label for="cognome">Cognome:</label>
+			<input type="text" name="cognome" id="cognome" value="{{ user.cognome }}" placeholder="Cognome" />
+		</div>
+		<div class="ui-field-label">
+			<label for="password">Password:</label>
+			<input type="password" name="password" id="password" value="" placeholder="Password" />
+			<input type="password" name="confermaPassword" value="" placeholder="Conferma password" />
+		</div>
+		<div class="ui-field-label">
+			<label for="email">La tua E-Mail.
+			<br>Scrivi la tua email per ricevere notifiche e confermare le associazioni autista/passeggero</label>
+			<input type="text" maxlength="30" name="email" id="email" value="{{ user.email }}" placeholder="La tua E-Mail" />
+		</div>
+		<div data-role="fieldcontain">
+			<input type="submit" value="Invia">
+		</div>
+	</form>
+{% endblock %}

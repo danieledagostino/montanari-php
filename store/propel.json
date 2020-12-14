@@ -1,0 +1,28 @@
+{
+    "propel": {
+        "database": {
+            "connections": {
+                "default": {
+                    "adapter": "mysql",
+                    "classname": "Propel\\Runtime\\Connection\\DebugPDO",
+                    "dsn": "mysql:host=localhost;port=3306;dbname=my_montanaridiricotta",
+                    "user": "root",
+                    "password": "",
+                    "settings": {
+                        "charset": "utf8"
+                    }
+                }
+            }
+        },
+        "runtime": {
+        	"defaultConnection": "default",
+            "log": {
+                "defaultLogger": {
+                    "type": "stream",
+                    "path": "/public/log/propel.log",
+                    "level": 300
+                }
+            }
+        }
+    }
+}

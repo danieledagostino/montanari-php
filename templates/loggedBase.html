@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<title>Montanari di ricotta</title>
+		
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob: filesystem:">
+		<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+		
+		{% block style %}
+			<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+			<link rel="stylesheet" href="https://demos.jquerymobile.com/1.4.0/theme-classic/theme-classic.css" />
+	        <link rel="stylesheet" href="/styles/custom-icon.css?{{ date().timestamp }}" />
+	        <link rel="stylesheet" href="/styles/style.css?{{ date().timestamp }}" />
+		{% endblock %}
+		<script
+		  	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCITsWtaRatLvKb8Ps2m16-pStKFO468D8">
+		</script>
+		
+		<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+		
+		<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async='async'></script>
+		<script>
+			var OneSignal = window.OneSignal || [];
+			OneSignal.push(["init", {
+				appId: "5995aa63-ca73-4f1f-b032-6f6ff1996176",
+				autoRegister: true, /* Set to true to automatically prompt visitors */
+				notifyButton: {
+					enable: false /* Set to false to hide */
+				},
+				promptOptions: {
+				  actionMessage: "Abilita per ricevere notifiche dal sistema",
+				  acceptButtonText: "Abilita",
+				  cancelButtonText: "NO"
+				}
+			}]);
+			OneSignal.push(function() {
+			    OneSignal.getUserId(function(userId) {
+			    	if ('{{ user.idPlayerNotifiche }}' == ''){
+			    		$.get('/ajax/pushUpdate/'+userId);
+			    	}
+			    });
+			});
+		</script>
+		{% block script %}{% endblock %}
+		<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+		<script src="/scripts/bubble_refresh.js?{{ date().timestamp }}"></script>
+		<script src="/scripts/collapsible-menu.js?{{ date().timestamp }}"></script>
+    </head>
+    <body>
+		<div id="home" data-role="page" data-theme="b">
+			<div data-role="panel" id="panelmenu" data-display="overlay">
+				{% include 'organize/pagemenu.html' %}
+			</div>
+			<div data-role="header" data-position="fixed">
+				<a href="#panelmenu" data-rel="close" data-icon="bars" data-iconpos="notext" class="ui-btn-left ui-btn-inline"></a>
+				<h4 class="ui-title-personal-area">Area Personale</h4>
+				<div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
+						<a href="/message/inbox" data-role="button" data-icon="comment" data-iconpos="notext" rel="external">Messaggi
+						<div class="ui-li-count ui-corner-all count-bubble" id="bubble_message" style="display: none;"></div></a>
+						<a href="/notification/all" data-role="button" data-icon="info" data-iconpos="notext" rel="external">Notifiche
+						<div class="ui-li-count ui-corner-all count-bubble" id="bubble_notification" style="display: none;"></div></a>
+						<a href="/user/logout" data-role="button" data-icon="action" data-iconpos="notext" rel="external">Logout</a>
+				</div>
+			</div>
+			<div data-role="content" class="ui-content">
+				<input type="hidden" name="idPushNotification" />
+				<h3 style="color: red;">{{ message|raw }}</h3>
+				{% block content %}{% endblock %}
+			</div>
+			<div data-role="popup" id="infoBlankPopup" data-theme="c" class="ui-corner-all ui-content" />
+		</div>
+    </body>
+</html>

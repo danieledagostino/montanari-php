@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project default="init" basedir=".">
+
+<target name="init">
+    <echo message="Copying files to C:\wamp\www"/>
+    <sync todir="C:\wamp\www" verbose="true">
+        <fileset dir=".">
+        	<include name="**/*" />
+        	<exclude name=".log" />
+            <exclude name=".settings/*" />
+            <exclude name=".buildpath" />
+            <exclude name=".project" />
+            <exclude name="build.xml" />
+        </fileset> 
+    </sync>
+</target>
+
+</project>

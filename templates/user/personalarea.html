@@ -1,0 +1,79 @@
+{% extends "loggedBase.html" %}
+
+{% block content %}
+	
+	{% if user.firstAccess %}
+	    <div>
+	    	<p>Ciao {{ user.nome }}.</p>
+	    	<p>Completa ora alcune informazioni del tuo profilo prima di
+	    		partecipare ad un evento.<br />
+	    	In alto a sinistra questa icona <span class="ui-btn-icon-notext ui-icon-bars" style="position: relative; float: left;"></span>
+	    		ti permetter&agrave; di accedere al men&ugrave;</p>
+	    </div>
+	{% endif %}
+	{% if user.abitazione == null or user.abitazione == '' %}
+		<div><p>Completa il tuo profilo impostando sulla mappa dove abiti. <a href='/profile/completion'>Accedi</a></p></div>
+	{% endif %}
+	<div class="ui-field-contain">
+		<div><h3>Questi sono gli eventi ai quali intendi partecipare</h3></div>
+		<div><h4>Come autista</h4></div>
+		<table data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke" id="tablevents">
+			<thead>
+				<tr>
+					<th data-priority="persist">Data</th>
+					<th data-priority="persist">Evento</th>
+					<th data-priority="persist"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for event in driverEvents %}
+					<tr>
+						<td>{{ event.eventDate|date("d M Y") }}</td>
+						<td>{{ event.name }}</td>
+						<td><a href='/driver/detail/{{ event.id }}' rel="external">Gestisci il viaggio!</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div><h4>Come passeggero</h4></div>
+		<table data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke" id="tablevents">
+			<thead>
+				<tr>
+					<th data-priority="persist">Data</th>
+					<th data-priority="persist">Evento</th>
+					<th data-priority="persist"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for event in passengerEvents %}
+					<tr>
+						<td>{{ event.eventDate|date("d M Y") }}</td>
+						<td>{{ event.name }}</td>
+						<td><a href='/passenger/detail/{{ event.id }}' rel="external">Cerca un&apos;autista!</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="ui-field-contain">
+		<div><h3>Gli altri eventi in programma</h3></div>
+		<table data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke" id="tablevents">
+			<thead>
+				<tr>
+					<th data-priority="persist">Data</th>
+					<th data-priority="persist">Evento</th>
+					<th data-priority="persist"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for event in otherEvents %}
+					<tr>
+						<td>{{ event.eventDate|date("d M Y") }}</td>
+						<td>{{ event.name }}</td>
+						<td><a href='/event/partecipa/{{ event.idFb }}' rel="external">Partecipa!</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "loggedBase.html" %}
+{% block script %}
+	<script	src="/scripts/map.js?{{ date().timestamp }}"></script>
+	<script	src="/scripts/clearAndAddSingleMarker.js?{{ date().timestamp }}"></script>
+	
+	<script>
+		$(document).ready(function(){
+			$("#updateProfileForm").submit(function(e){
+			    
+			    $('#abitazione').val(origins[0].lat()+','+origins[0].lng());
+			    return;
+			});
+			
+		});
+		
+		$(document).on('pagecreate', '#home', function() {
+			initMap();
+			
+			var abitazione = '{{ user.abitazione }}';
+			
+			if (abitazione != ''){
+				$('#abitazione').val(abitazione);
+				
+				var p = latLngFromString(abitazione);
+				
+				placeMarker(p, map);
+				map.setCenter(p);
+			}
+		});
+	</script>
+	
+{% endblock %}
+
+{% block content %}
+	
+	<form action="/profile/save" method="post" data-ajax="false" id="updateProfileForm">
+		<div class="ui-field-label">
+			<label for="abitazione">Dove abiti?</label>
+			<div id="map-canvas"></div>
+			<input type="hidden" maxlength="30" name="abitazione" id="abitazione" />
+		</div>
+		<fieldset data-role="controlgroup" data-type="vertical">
+			<legend>Puoi spostarti in autonomia per raggiungere l&apos;eventuale punto di incontro?</legend>
+			<input id="gk-929XAz2" name="autonomia" value="1" type="radio" {{ user.autonomia == 1 ? 'checked="checked"' : '' }}>
+			<label for="gk-929XAz2">Si</label>
+			<input id="gk-929ed24" name="autonomia" value="0" type="radio" {{ user.autonomia == 0 ? 'checked="checked"' : '' }}>
+			<label for="gk-929ed24">No</label>
+		</fieldset>
+		<div data-role="fieldcontain">
+			<input type="submit" value="Invia">
+		</div>
+	</form>
+	
+{% endblock %}

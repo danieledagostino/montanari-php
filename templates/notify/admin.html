@@ -1,0 +1,31 @@
+{% extends "loggedBase.html" %}
+
+{% block script %}
+	<script src="/scripts/messages.js?{{ date().timestamp }}"></script>
+{% endblock %}
+
+{% block content %}
+	<table data-role="table" data-mode="columntoggle" class="ui-responsive table-stroke">
+		<thead>
+			<tr>
+				<th data-priority="persist">Mittente</th>
+				<th data-priority="persist">Oggetto</th>
+				<th data-priority="persist">Data</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for msg in messages %}
+				<tr messageId="{{ msg.id }}"
+					{% if msg.read is empty %}
+						style="font-weight:bold;"
+					{% endif %}>
+					<td>{{ msg.userFrom.fullName }}</td>
+					<td>{{ msg.subject }}</td>
+					<td>{{ msg.insertDate |date("d M Y h:i:s")}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+		
+	{% include 'common/contextmenu.html' %}
+{% endblock %}

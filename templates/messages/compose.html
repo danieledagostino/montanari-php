@@ -1,0 +1,80 @@
+{% extends "loggedBase.html" %}
+
+{% block script %}
+	<script>
+		$(document).on("pagecreate", function () {
+			$("#toUserStr li").click(function () {
+			    var text = $(this).text();
+			    $(this).closest("div").find("input").val(text);
+		        
+			    $("#toUser").val($(this).find("a").attr("iduser"));
+		        
+			    /* hide all options */
+		        $(this).siblings().addBack().addClass("ui-screen-hidden");
+			});
+			
+			$('#textarea-message').removeClass();
+		});
+	</script>
+{% endblock %}
+
+{% block content %}
+
+	<form action="/message/send" method="post" data-ajax="false">
+		<input type="hidden" name="toUser" id="toUser" value="{% (if replyMsg ? replyMsg.id : '') %}" />
+		<div class="ui-field-contain">
+			<label for="search-1">Destinatario:</label>
+			<ul data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" id="toUserStr" data-filter-placeholder="Digita il nome...">
+				{% for user in users %}
+					<li><a href="#" iduser="{{ user.id }}">{{ user.nome }} {{ user.cognome }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="ui-field-contain">
+			<label for="sel-ruolo">Oggetto del messaggio</label>
+			<select name="subject" id="sel-ruolo">
+				{% if reSubject %}
+					<option value="{{ reSubject }}">{{ reSubject }}</option>
+				{% else %}
+					<optgroup label="Richiesta informazioni">
+						<option value="Contatti privati">Contatti privati</option>
+					</optgroup>
+					{% if driverEvents|length > 0 %}
+						<optgroup label="Evento per autista">
+							{% for event in driverEvents %}
+								<option value="Autista per {{ event.name }}">{{ event.name }}</option>
+							{% endfor %}
+						</optgroup>
+					{% endif %}
+					{% if passengerEvents|length > 0 %}
+						<optgroup label="Evento per passeggero">
+							{% for event in passengerEvents %}
+								<option value="Passeggero per {{ event.name }}">{{ event.name }}</option>
+							{% endfor %}
+						</optgroup>
+					{% endif %}
+				{% endif %}
+			</select>
+		</div>
+		<div class="ui-field-contain">
+			<label for="textarea-1">Messaggio:</label>
+    		<div name="textarea" class="ui-input-text ui-shadow-inset ui-body-inherit ui-corner-all ui-textinput-autogrow" style="padding: 10px;">
+				<textarea id="textarea-message" name="message" rows="10" width="100%" style="border:  none; width:  100%;"></textarea>
+				
+				{% if replyMsg %}
+					{% set parentPresent = true %}
+					{% set indent = 10 %}
+					<input type="hidden" name="replyMsgId" value="{{ replyMsg.id }}" />
+					{% for i in 0..5 if parentPresent %}
+						<div id="textarea-message-reply" style="margin-left: {{ indent }}px;">
+							<i>{{ replyMsg.message |e('html') }}</i>
+						</div>
+						{% set parentPresent = replyMsg.parentTo %}
+						{% set indent = indent + 10 %}
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+		<input type="submit" value="Invia">
+	</form>
+{% endblock %}

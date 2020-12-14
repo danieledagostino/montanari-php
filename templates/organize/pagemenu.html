@@ -1,0 +1,45 @@
+<ul data-role="listview">
+	<li>
+		<h3><a href="/">Home</a></h3>
+	</li>
+	<li data-role="collapsible" data-iconpos="right" data-inset="false" id="messageCollapsible">
+		<h3>Messaggi</h3>
+		<ul data-role="listview" data-theme="c">
+			<li data-icon="mail"><a href="/message/inbox" rel="external">In Arrivo<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">12</span></a></li>
+			<li data-icon="phone"><a href="/message/sent" rel="external">Inviati<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">25</span></a></li>
+			<li data-icon="edit"><a href="/message/compose" rel="external">Componi</a></li>
+			<li data-icon="forbidden"><a href="/message/recycle" rel="external">Cestino<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">6</span></a></li>
+		</ul>
+	</li>
+	<li data-role="collapsible" data-iconpos="right" data-inset="false" id="eventCollapsible">
+		<h3>Eventi</h3>
+		<ul data-role="listview" data-theme="c">
+			<li class="corso"><a href="/event/avalaible">In corso<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">4</span></a></li>
+			<li class="partecipi"><a href="/event/joined">Ai quali partecipi<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">8</span></a></li>
+		</ul>
+	</li>
+	<li data-role="collapsible" data-iconpos="right" data-inset="false" id="orgCarCollapsible">
+		<h3>Org. Macchine</h3>
+		<ul data-role="listview" data-theme="c">
+			<li class="driver"><a href="/driver/events" rel="external">Come autista<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">2</span></a></li>
+			<li class="passenger"><a href="/passenger/events" rel="external">Come passeggero<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">9</span></a></li>
+		</ul>
+	</li>
+	<li data-role="collapsible" data-iconpos="right" data-inset="false" id="notifyCollapsible">
+		<h3>Notifiche</h3>
+		<ul data-role="listview" data-theme="c">
+			<li><a href="/notification/admin" rel="external">Dall&apos;admin<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">4</span></a></li>
+			<li><a href="/notification/system" rel="external">Dal sistema<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">34</span></a></li>
+			<li><a href="/notification/other" rel="external">Per eventi<span class="ui-li-count ui-btn-up-c ui-btn-corner-all">2</span></a></li>
+		</ul>
+	</li>
+	<li data-role="collapsible" data-iconpos="right" data-inset="false">
+		<h3>Impostazioni</h3>
+		<ul data-role="listview" data-theme="c">
+			<li><a href="/setting/" rel="external">Notifiche</a></li>
+			<li><a href="/setting/password" rel="external">Cambio Password</a></li>
+			<li><a href="/profile/completion" rel="external">Profilo</a></li>
+		</ul>
+	</li>
+	{% block menu %}{% endblock %}
+</ul>

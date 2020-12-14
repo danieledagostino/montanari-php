@@ -1,0 +1,76 @@
+
+#map-canvas {
+	height: 200px;
+	width: 100%;
+}
+
+.ui-li-static.ui-collapsible > .ui-collapsible-heading {
+    margin: 0;
+}
+.ui-li-static.ui-collapsible {
+    padding: 0;
+}
+.ui-li-static.ui-collapsible > .ui-collapsible-heading > .ui-btn {
+    border-top-width: 0;
+}
+.ui-li-static.ui-collapsible > .ui-collapsible-heading.ui-collapsible-heading-collapsed > .ui-btn,
+.ui-li-static.ui-collapsible > .ui-collapsible-content {
+    border-bottom-width: 0;
+}
+
+.ui-title {
+    margin: 0 20% !important;
+}
+
+.ui-title-personal-area {
+	margin-left: 0em !important;
+}
+a.ui-nav-icon {
+    float: left
+}
+div.count-bubble {
+	float:left;
+	margin-top:-13px;
+	text-align: right;
+	background:#ed1d24;
+	color:#fff;
+	font-size:8px !important;
+    border: 0;
+    margin-right: -3px;
+}
+
+.grid_attr {
+	background-color: transparent;
+}
+
+textarea {
+	height: auto !important;
+}
+
+table.ui-responsive tr {
+	font-size: small;
+}
+
+.ui-table-columntoggle-btn {
+    display: none !important;
+}
+
+.message_detail{
+	width: 80%;
+	margin: auto;
+}
+
+#textarea-message-reply{
+	border-left-width:  1px;
+    border-left-color:  black;
+    border-left-style:  solid;
+    padding-left: 5px;
+    font-size: small;
+}
+
+#detailPopup {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    display: block;
+}

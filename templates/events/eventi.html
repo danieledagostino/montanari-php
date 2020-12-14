@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="ui-field-contain">
+		<div><h3>Lista prossimi eventi</h3></div>
+		{% for event in otherEvents %}
+			<div data-role="collapsible-set">
+				<div data-role="collapsible" data-collapsed="true">
+					<h4>{{ event.eventDate|date("d M Y") }} - {{ event.name }}</h4>
+					<p>
+					Punto di incontro <a href='https://www.google.it/maps/place/{{ event.place.latitude }},{{ event.place.longitude }}'>
+					{{ event.meetingPointName }}</a><br />
+					<p>{{ event.description }}</p>
+					<p><a href='/event/partecipa/{{ event.idFb }}'>Clicca per partecipare!</a></p>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}
