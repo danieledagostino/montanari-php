@@ -63,7 +63,7 @@ $container['PassengerController'] = function ($app2) use ($app) {
 	return new Montanari\Controllers\PassengerController($app2);
 };
 
-$container['AjaxController'] = function ($app2) use ($app2) {
+$container['AjaxController'] = function ($app2) use ($app) {
 	return new Montanari\Controllers\AjaxController($app2);
 };
 
@@ -72,6 +72,6 @@ $container['MessageController'] = function ($app2) use ($app) {
 };
 
 $container['NotificationController'] = function ($app2) use ($app) {
-	return new Montanari\Controllers\NotificationController($app);
+	return new Montanari\Controllers\NotificationController($app2);
 };
 ?>
