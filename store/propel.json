@@ -5,9 +5,9 @@
                 "default": {
                     "adapter": "mysql",
                     "classname": "Propel\\Runtime\\Connection\\DebugPDO",
-                    "dsn": "mysql:host=localhost;port=3306;dbname=my_montanaridiricotta",
-                    "user": "root",
-                    "password": "",
+                    "dsn": "mysql:host=j5zntocs2dn6c3fj.chr7pe7iynqr.eu-west-1.rds.amazonaws.com;port=3306;dbname=ax52m07alhrlfni4",
+                    "user": "u6cswd4enkr1mrhp",
+                    "password": "fcn0s93s0qub8rbk",
                     "settings": {
                         "charset": "utf8"
                     }
