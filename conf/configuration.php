@@ -35,43 +35,43 @@ $container['notFoundHandler'] = function ($c) {
 	};
 };
 
-$container['LoginController'] = function ($app2) use ($app) {
-    return new Montanari\Controllers\LoginController($app2);
+$container['LoginController'] = function ($container2) use ($container) {
+    return new Montanari\Controllers\LoginController($container2);
 };
 
-$container['EventController'] = function ($app2) use ($app) {
-    return new Montanari\Controllers\EventController($app2);
+$container['EventController'] = function ($container2) use ($container) {
+    return new Montanari\Controllers\EventController($container2);
 };
 
-$container['ProfileController'] = function ($app2) use ($app) {
-	return new Montanari\Controllers\ProfileController($app2);
+$container['ProfileController'] = function ($container2) use ($container) {
+	return new Montanari\Controllers\ProfileController($container2);
 };
 
-$container['CronController'] = function ($app2) use ($app) {
-	return new Montanari\Controllers\CronController($app2);
+$container['CronController'] = function ($container2) use ($container) {
+	return new Montanari\Controllers\CronController($container2);
 };
 
-$container['SettingController'] = function ($app2) use ($app) {
-	return new Montanari\Controllers\SettingController($app2);
+$container['SettingController'] = function ($container2) use ($container) {
+	return new Montanari\Controllers\SettingController($container2);
 };
 
-$container['DriverController'] = function ($app2) use ($app) {
-	return new Montanari\Controllers\DriverController($app2);
+$container['DriverController'] = function ($container2) use ($container) {
+	return new Montanari\Controllers\DriverController($container2);
 };
 
-$container['PassengerController'] = function ($app2) use ($app) {
-	return new Montanari\Controllers\PassengerController($app2);
+$container['PassengerController'] = function ($container2) use ($container) {
+	return new Montanari\Controllers\PassengerController($container2);
 };
 
-$container['AjaxController'] = function ($app2) use ($app) {
-	return new Montanari\Controllers\AjaxController($app2);
+$container['AjaxController'] = function ($container2) use ($container) {
+	return new Montanari\Controllers\AjaxController($container2);
 };
 
-$container['MessageController'] = function ($app2) use ($app) {
-	return new Montanari\Controllers\MessageController($app2);
+$container['MessageController'] = function ($container2) use ($container) {
+	return new Montanari\Controllers\MessageController($container2);
 };
 
-$container['NotificationController'] = function ($app2) use ($app) {
-	return new Montanari\Controllers\NotificationController($app2);
+$container['NotificationController'] = function ($container2) use ($container) {
+	return new Montanari\Controllers\NotificationController($container2);
 };
 ?>

@@ -1,4 +1,5 @@
 <?php
+use \Interop\Container\ContainerInterface as ContainerInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../conf/credentials.php';

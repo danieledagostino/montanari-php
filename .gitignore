@@ -1,3 +1,7 @@
 vendor/
-store/
 .env
+.idea/
+PhpStorm_Reference_Card.pdf
+docker-compose.yml
+license.txt
+workshop/

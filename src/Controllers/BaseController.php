@@ -5,6 +5,7 @@ namespace Montanari\Controllers;
 use Interop\Container\ContainerInterface;
 
 use \Slim\App as App;
+use \Slim\Container as Container;
 
 use \PHPMailer\PHPMailer\PHPMailer as PHPMailer;
 
@@ -52,9 +53,8 @@ class BaseController
      *
      * @param \Interop\Container\ContainerInterface $container
      */
-    public function __construct(App $app)
+    public function __construct(Container $container)
     {
-    	$container = $app->getContainer();
     	$this->router = $container->get('router');
         $this->container = $container;
 		//$this->auth = $container->get('auth');
