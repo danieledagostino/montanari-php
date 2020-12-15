@@ -149,7 +149,7 @@ class LoginController extends BaseController{
 				if (true){
 			        $this->logger->addInfo('Aggiorno la lista degli eventi visto che son passati pi di 30gg');
 			        
-			        $this->updateEventsFromFb();
+			        //$this->updateEventsFromFb();
 			        
 			        $eventUpdate = AppSettingsQuery::create()->findOneByKeyName('last_event_update');
 			        $now = new \DateTime();
